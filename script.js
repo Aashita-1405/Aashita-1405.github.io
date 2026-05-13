@@ -1,106 +1,43 @@
-// script.js
-document.addEventListener('DOMContentLoaded', function() {
-    // Mobile menu toggle
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    
-    if (menuToggle) {
-        menuToggle.addEventListener('click', function() {
-            navLinks.classList.toggle('active');
-            this.querySelector('i').classList.toggle('fa-bars');
-            this.querySelector('i').classList.toggle('fa-times');
-        });
-        
-        // Close menu when clicking on a link
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                menuToggle.querySelector('i').classList.remove('fa-times');
-                menuToggle.querySelector('i').classList.add('fa-bars');
-            });
-        });
-    }
-    
+  document.addEventListener('DOMContentLoaded', () => {
+    // Mobile menu
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+    hamburger?.addEventListener('click', () => navMenu.classList.toggle('active'));
+    document.querySelectorAll('.nav-menu a').forEach(link => link.addEventListener('click', () => navMenu.classList.remove('active')));
+
     // Set current year in footer
-    const currentYear = new Date().getFullYear();
-    document.getElementById('currentYear').textContent = currentYear;
-    
-    // Form submission
-    const contactForm = document.getElementById('messageForm');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form values
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const subject = document.getElementById('subject').value;
-            const message = document.getElementById('message').value;
-            
-            // In a real application, you would send this data to a server
-            // For demo purposes, we'll just show an alert
-            alert(`Thank you, ${name}! Your message has been received. I'll get back to you at ${email} as soon as possible.`);
-            
-            // Reset form
-            contactForm.reset();
-        });
-    }
-    
-    // Animate skill bars on scroll
-    const animateOnScroll = function() {
-        const skillBars = document.querySelectorAll('.skill-level, .language-progress');
-        
-        skillBars.forEach(bar => {
-            const barPosition = bar.getBoundingClientRect().top;
-            const screenPosition = window.innerHeight / 1.3;
-            
-            if (barPosition < screenPosition) {
-                // The animation is already in the CSS via width property
-                // We just need to trigger reflow for any dynamic animations
-                bar.style.width = bar.style.width;
-            }
-        });
+    document.querySelector('footer p').innerHTML = `© ${new Date().getFullYear()} Aashita Sasikumar. All rights reserved.`;
+
+    // Certificate links - REPLACE THESE URLS WITH YOUR ACTUAL CERTIFICATE LINKS
+    const certLinks = {
+        cert1: "https://www.linkedin.com/posts/aashita-sasikumar-976a51299_plans-activity-7415431676895391745-f9zZ?utm_source=share&utm_medium=member_android&rcm=ACoAAEg8aSoBaQU_e0FQO07cAe7c8ep20KfkIek",  // Microsoft Power BI
+        cert2: "https://www.linkedin.com/posts/aashita-sasikumar-976a51299_successfully-completed-data-science-for-beginners-activity-7427342521426550786-SB7q?utm_source=share&utm_medium=member_android&rcm=ACoAAEg8aSoBaQU_e0FQO07cAe7c8ep20KfkIek",  // Data Science for Beginners
+        cert3: "https://www.linkedin.com/posts/aashita-sasikumar-976a51299_hackerrank-python-learningjourney-activity-7400519846725214208-EPYj?utm_source=share&utm_medium=member_android&rcm=ACoAAEg8aSoBaQU_e0FQO07cAe7c8ep20KfkIek",  // Python Basics - HackerRank
+        cert4: "https://www.linkedin.com/posts/aashita-sasikumar-976a51299_aiforbeginners-hplife-techskills-activity-7398601522269315072-ks3k?utm_source=share&utm_medium=member_android&rcm=ACoAAEg8aSoBaQU_e0FQO07cAe7c8ep20KfkIek",  // HP AI for Beginners
+        cert5: "https://www.linkedin.com/posts/aashita-sasikumar-976a51299_introducing-sap-abap-platform-fundamentals-activity-7321038859117432832-kNAB?utm_source=share&utm_medium=member_android&rcm=ACoAAEg8aSoBaQU_e0FQO07cAe7c8ep20KfkIek",  // SAP ABAP Fundamentals
+        cert6: "https://www.linkedin.com/posts/aashita-sasikumar-976a51299_i-am-feeling-elated-to-have-just-completed-activity-7261977773185867777-3hAm?utm_source=share&utm_medium=member_android&rcm=ACoAAEg8aSoBaQU_e0FQO07cAe7c8ep20KfkIek"   // Cybersecurity - Microsoft
     };
-    
-    // Initial call
-    animateOnScroll();
-    
-    // Listen for scroll events
-    window.addEventListener('scroll', animateOnScroll);
-    
-    // Add active class to navbar links on scroll
-    const sections = document.querySelectorAll('section');
-    const navItems = document.querySelectorAll('.nav-links a');
-    
-    window.addEventListener('scroll', function() {
-        let current = '';
-        
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            
-            if (scrollY >= (sectionTop - 200)) {
-                current = section.getAttribute('id');
-            }
-        });
-        
-        navItems.forEach(item => {
-            item.classList.remove('active');
-            if (item.getAttribute('href') === `#${current}`) {
-                item.classList.add('active');
-            }
-        });
+    for (let i = 1; i <= 6; i++) {
+        const el = document.getElementById(`cert${i}`);
+        if (el && certLinks[`cert${i}`]) el.href = certLinks[`cert${i}`];
+    }
+
+    // Contact form alert
+    const form = document.getElementById('contactForm');
+    form?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert("Thank you for your message! I'll get back to you soon.");
+        form.reset();
     });
-    
-    // Add hover effect to project cards
-    const projectCards = document.querySelectorAll('.project-card');
-    projectCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-10px)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
         });
     });
 });
